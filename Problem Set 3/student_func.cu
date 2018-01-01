@@ -180,9 +180,9 @@ void minimum_maximum(const float* const d_logLuminance, float &min_logLum, float
 
 __global__
 void generate_histogram(const float* const d_logLuminance,
-                        unsigned int* d_cdf,
-                        const float &min_logLum,
-                        const float &max_logLum,
+                        unsigned int* const d_cdf,
+                        const float min_logLum,
+                        const float max_logLum,
                         const size_t numRows,
                         const size_t numCols,
                         const size_t numBins){
@@ -272,25 +272,14 @@ void your_histogram_and_prefixsum(const float* const d_logLuminance,
 
   
   //1 and 2
-  minimum_maximum(d_logLuminance, min_logLum, max_logLum, numRows,numCols);
-  
+  minimum_maximum(d_logLuminance, min_logLum, max_logLum, numRows,numCols);  
   //3
   const dim3 blockSize(32,32,1);
   const dim3 gridSize(numRows/32 +1, numCols/32 +1, 1);
-  unsigned int *d_hBins;
-  checkCudaErrors(cudaMalloc((void**)&d_hBins, sizeof(unsigned int) * numBins));
-  checkCudaErrors(cudaMemset((void*)d_hBins, 0, sizeof(unsigned int) * numBins));
-
-
-  //printf("%f\n",min_logLum);
-  //printf("%f\n", max_logLum);
-  
-  generate_histogram<<<gridSize,blockSize>>>(d_logLuminance, d_hBins, min_logLum, max_logLum, numRows,numCols,numBins);
-
-  
+  generate_histogram<<<gridSize,blockSize>>>(d_logLuminance, d_cdf, min_logLum, max_logLum, numRows,numCols,numBins);  
   //4
-  generate_cdf<<<(numBins+1024-1)/1024,1024>>>(d_hBins,numRows,numCols,numBins);
-
-  checkCudaErrors(cudaMemcpy(d_cdf, d_hBins, numBins*sizeof(unsigned int), cudaMemcpyDeviceToDevice));
-
+  generate_cdf<<<(numBins+1024-1)/1024,1024>>>(d_cdf,numRows,numCols,numBins);
 }
+
+
+  
