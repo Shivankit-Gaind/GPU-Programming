@@ -4,7 +4,7 @@ This repository contains my solutions to the programming assignments of the Udac
 
 I have uploaded this code which contains my completed solutions along with the rest of the code in the library that was needed to compile and run it. To find the code that I wrote, please look in: `Problem Set <INT>/student_func.cu`.
 
-Udacity course that this work comes from: https://www.udacity.com/course/intro-to-parallel-programming--cs344
+Udacity course that this work comes from: https://eg.udacity.com/course/intro-to-parallel-programming--cs344
 
 ## Problem Descriptions
 
