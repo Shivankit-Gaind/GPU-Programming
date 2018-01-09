@@ -27,3 +27,13 @@ The algorithm for red eye removal was to find the likelihood for every pixel tha
 
 ### Problem 5 : Histogramming for Speed
 The goal of this assignment is compute a histogram as fast as possible. The problem was simplified as much as possible to allow me to focus solely on the histogramming algorithm. The input values that we need to histogram are already the exact bins that need to be updated.
+
+### Problem 6 : Seamless Image Cloning
+The goal for this assignment is to take one image (the source) and paste it into another image (the destination) attempting to match the two images so that the pasting is non-obvious. This is known as a "seamless clone". Here are the steps we need to implement:
+1) Compute a mask of the pixels from the source image to be copied. The pixels that shouldn't be copied are completely white, they have R=255, G=255, B=255.  Any other pixels SHOULD be copied.
+2) Compute the interior and border regions of the mask.  An interior ixel has all 4 neighbors also inside the mask.  A border pixel is in the mask itself, but has at least one neighbor that isn't.
+3) Separate out the incoming image into three separate channels.
+4) Create two float(!) buffers for each color channel that will act as our guesses.  Initialize them to the respective color channel of the source image since that will act as our intial guess.
+5) For each color channel perform the Jacobi iteration as described in the video 800 times.
+6) Create the output image by replacing all the interior pixels in the destination image with the result of the Jacobi iterations.
+
